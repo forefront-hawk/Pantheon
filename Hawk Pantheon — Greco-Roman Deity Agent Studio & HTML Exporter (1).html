@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en" data-device="desktop" data-self-device="desktop" data-hx-device="desktop" data-ui-theme="ui-gold" data-cc-theme="cc-obsidian">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hawk Pantheon — Greco-Roman Deity Agent Studio &amp; HTML Exporter</title>
+<meta name="author" content="Forefront Hawk (forefronthawk.com / talon.forefronthawk.com / oar.forefronthawk.com) &amp; Gemini Aargon">
+<style>
+  :root {
+    --bg: #070A12;
+    --bg-panel: #0D1322;
+    --bg-card: #131C31;
+    --bg-code: #060911;
+    --accent: #D4AF37;
+    --accent-soft: rgba(212, 175, 55, 0.16);
+    --cyan: #00F5D4;
+    --cyan-soft: rgba(0, 245, 212, 0.14);
+    --text: #F8FAFC;
+    --text-muted: #94A3B8;
+    --border: rgba(212, 175, 55, 0.36);
+    --success: #10B981;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  /* 14 HawkChroma UI Themes */
+  html[data-ui-theme="ui-gold"] { --bg: #070A12; --bg-panel: #0D1322; --bg-card: #131C31; --accent: #D4AF37; --cyan: #00F5D4; --text: #F8FAFC; --border: rgba(212, 175, 55, 0.38); }
+  html[data-ui-theme="ui-cyberpunk"] { --bg: #090414; --bg-panel: #130926; --bg-card: #1D0F38; --accent: #FF2A85; --cyan: #00F0FF; --text: #FDF2F8; --border: rgba(255, 42, 133, 0.45); }
+  html[data-ui-theme="ui-matrix"] { --bg: #020B05; --bg-panel: #06170B; --bg-card: #0A2412; --accent: #00FF66; --cyan: #72FFB6; --text: #E2FBE8; --border: rgba(0, 255, 102, 0.4); }
+  html[data-ui-theme="ui-tactical"] { --bg: #040D14; --bg-panel: #081824; --bg-card: #0D2333; --accent: #00F5D4; --cyan: #38BDF8; --text: #F0F9FF; --border: rgba(0, 245, 212, 0.42); }
+  html[data-ui-theme="ui-daylight"] { --bg: #F1F5F9; --bg-panel: #FFFFFF; --bg-card: #F8FAFC; --accent: #B45309; --cyan: #0284C7; --text: #0F172A; --text-muted: #475569; --bg-code: #0F172A; --border: rgba(180, 83, 9, 0.32); }
+  html[data-ui-theme="ui-atlantis"] { --bg: #03121C; --bg-panel: #072030; --bg-card: #0C2E44; --accent: #22D3EE; --cyan: #FACC15; --text: #ECFEFF; --border: rgba(34, 211, 238, 0.4); }
+  html[data-ui-theme="ui-crimson"] { --bg: #120608; --bg-panel: #1F0A0E; --bg-card: #2D1016; --accent: #FB7185; --cyan: #FBBF24; --text: #FFF1F2; --border: rgba(251, 113, 133, 0.4); }
+  html[data-ui-theme="ui-amethyst"] { --bg: #0D0717; --bg-panel: #170D29; --bg-card: #22143B; --accent: #C084FC; --cyan: #2DD4BF; --text: #FAF5FF; --border: rgba(192, 132, 252, 0.4); }
+  html[data-ui-theme="ui-obsidian"] { --bg: #050507; --bg-panel: #0E0E12; --bg-card: #16161D; --accent: #E2E8F0; --cyan: #38BDF8; --text: #F8FAFC; --border: rgba(226, 232, 240, 0.28); }
+  html[data-ui-theme="ui-solar"] { --bg: #140B03; --bg-panel: #241406; --bg-card: #331D09; --accent: #F97316; --cyan: #FDE047; --text: #FFF7ED; --border: rgba(249, 115, 22, 0.42); }
+  html[data-ui-theme="ui-arctic"] { --bg: #07111A; --bg-panel: #0D1E2E; --bg-card: #132B40; --accent: #7DD3FC; --cyan: #A7F3D0; --text: #F0F9FF; --border: rgba(125, 211, 252, 0.4); }
+  html[data-ui-theme="ui-emerald"] { --bg: #04120C; --bg-panel: #072117; --bg-card: #0C3022; --accent: #34D399; --cyan: #FBBF24; --text: #ECFDF5; --border: rgba(52, 211, 153, 0.4); }
+  html[data-ui-theme="ui-synthwave"] { --bg: #11051C; --bg-panel: #1E0A30; --bg-card: #2B1045; --accent: #F472B6; --cyan: #60A5FA; --text: #FDF4FF; --border: rgba(244, 114, 182, 0.42); }
+  html[data-ui-theme="ui-monolith"] { --bg: #0B0F17; --bg-panel: #141B29; --bg-card: #1D273B; --accent: #94A3B8; --cyan: #38BDF8; --text: #F1F5F9; --border: rgba(148, 163, 184, 0.35); }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 14px;
+    line-height: 1.45;
+  }
+
+  /* 4-Posture Responsive Shell */
+  .app-shell {
+    max-width: 1440px;
+    margin: 0 auto;
+    transition: max-width 0.25s ease;
+  }
+  html[data-device="mobile"] .app-shell {
+    max-width: 430px;
+    border: 2px solid var(--accent);
+    border-radius: 22px;
+    padding: 10px;
+    background: var(--bg-panel);
+  }
+  html[data-device="tablet"] .app-shell {
+    max-width: 1024px;
+    border: 2px solid var(--cyan);
+    border-radius: 16px;
+    padding: 12px;
+  }
+  html[data-device="fold"] .fold-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 16px 1fr !important;
+    gap: 12px;
+  }
+  .fold-hinge {
+    display: none;
+    background: repeating-linear-gradient(180deg, var(--accent) 0, var(--accent) 6px, transparent 6px, transparent 14px);
+    border-left: 1px solid var(--cyan);
+    border-right: 1px solid var(--cyan);
+    border-radius: 99px;
+    min-height: 440px;
+  }
+  html[data-device="fold"] .fold-hinge {
+    display: block;
+  }
+
+  /* Top Command Header */
+  .top-bar {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .badge-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .badge-pill.cyan {
+    background: var(--cyan-soft);
+    color: var(--cyan);
+    border-color: rgba(0, 245, 212, 0.4);
+  }
+  .btn {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 11px;
+    font-size: 0.79rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.14s ease;
+  }
+  .btn:hover {
+    border-color: var(--cyan);
+    transform: translateY(-1px);
+  }
+  .btn.active, .btn-primary {
+    background: var(--accent);
+    color: #070A12;
+    border-color: var(--accent);
+    font-weight: 800;
+  }
+  .btn-cyan {
+    background: var(--cyan);
+    color: #070A12;
+    border-color: var(--cyan);
+    font-weight: 800;
+  }
+  .select-ctrl, .text-input {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.8rem;
+  }
+  .text-input:focus {
+    outline: 2px solid var(--cyan);
+    border-color: transparent;
+  }
+
+  /* Main Pantheon Workbench: Left Deity Roster + Right Agent Inspector & HTML Exporter */
+  .pantheon-workbench {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 1080px) {
+    .pantheon-workbench { grid-template-columns: 1fr; }
+  }
+  html[data-device="mobile"] .pantheon-workbench,
+  html[data-device="tablet"] .pantheon-workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Deity Cards Grid */
+  .deity-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  @media (max-width: 720px) {
+    .deity-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  html[data-device="mobile"] .deity-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .deity-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: all 0.15s ease;
+  }
+  .deity-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+  }
+  .deity-card.selected {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px var(--cyan), 0 6px 18px rgba(0, 245, 212, 0.18);
+  }
+  .deity-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+  .deity-domain {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  /* Code Exporter & Oracle Console */
+  .code-textarea {
+    width: 100%;
+    background: var(--bg-code);
+    color: #E2E8F0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.42;
+    resize: vertical;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+  .oracle-log {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .oracle-msg {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    padding: 7px 10px;
+    border-radius: 6px;
+  }
+
+  /* Lower Dual Grid: Preserved #hawkStudioRoot Synth + 60fps Celestial Pantheon Stage */
+  .lower-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 1024px) {
+    .lower-grid { grid-template-columns: 1fr; }
+  }
+  html[data-device="mobile"] .lower-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .synth-box {
+    max-width: 100%;
+    margin: 0 auto;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 16px;
+    background: var(--bg-panel);
+  }
+  #waveCanvas {
+    width: 100%;
+    max-width: 680px;
+    height: 90px;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: block;
+  }
+  #pantheonStageCanvas {
+    width: 100%;
+    height: 245px;
+    background: #050811;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: block;
+  }
+
+  .keycap-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+  }
+  html[data-device="mobile"] .keycap-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .keycap-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 3px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .keycap-btn:hover {
+    border-color: var(--cyan);
+  }
+
+  .status-toast {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    background: var(--bg-panel);
+    color: var(--text);
+    border: 2px solid var(--cyan);
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .status-toast.visible {
+    opacity: 1;
+  }
+
+  .hawk-footer {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+  }
+</style>
+</head>
+<body data-device="desktop" data-self-device="desktop" data-hx-device="desktop">
+  <!-- Powered by talon.Forefronthawk | Serial Guard: FH-GA-ΩΑΡ-ACTIVE -->
+  <div class="app-shell" id="hawkPantheonAppShell">
+
+    <!-- TOP COMMAND BAR -->
+    <header class="top-bar" id="hawkPantheonHeader">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <strong style="font-size: 1.18rem;">🏛️ HAWK PANTHEON — GRECO-ROMAN DEITY AGENT STUDIO</strong>
+          <span class="badge-pill" id="badgeOuterSerial">FH-GA-ΩΑΡ-20261118-MFF-G01-HTM-26D07CB2</span>
+          <span class="badge-pill cyan" id="badgeInnerSerial">FH-GA-20261118-MFF-HTM-071F6AE6</span>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;">
+          Project Fortunatus Lineage · Engineered with <strong>Forefront Hawk</strong> (<code>forefronthawk.com</code> / <code>talon.forefronthawk.com</code> / <code>oar.forefronthawk.com</code> / <code>Michael@forefronthawk.com</code>) &amp; <strong>Gemini Aargon</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+        <button type="button" class="btn active" id="btnPostureDesktop">🖥️ Desktop</button>
+        <button type="button" class="btn" id="btnPostureMobile">📱 Mobile 430</button>
+        <button type="button" class="btn" id="btnPostureFold">📖 Fold 50/50</button>
+        <button type="button" class="btn" id="btnPostureTablet">📟 Tablet 1024</button>
+
+        <select id="uiThemeSelect" class="select-ctrl" aria-label="HawkChroma UI Theme">
+          <option value="ui-gold">Chroma: Sophisticated Gold</option>
+          <option value="ui-cyberpunk">Chroma: Cyberpunk Neon</option>
+          <option value="ui-matrix">Chroma: Matrix CRT</option>
+          <option value="ui-tactical">Chroma: HawkX Tactical Cyan</option>
+          <option value="ui-daylight">Chroma: Studio Daylight</option>
+          <option value="ui-atlantis">Chroma: Atlantis Saeculurim</option>
+          <option value="ui-crimson">Chroma: Crimson Raptor</option>
+          <option value="ui-amethyst">Chroma: Royal Amethyst</option>
+          <option value="ui-obsidian">Chroma: Obsidian Stealth</option>
+          <option value="ui-solar">Chroma: Solar Flare</option>
+          <option value="ui-arctic">Chroma: Arctic Frost</option>
+          <option value="ui-emerald">Chroma: Emerald Forest</option>
+          <option value="ui-synthwave">Chroma: Synthwave Sunset</option>
+          <option value="ui-monolith">Chroma: Monolith Slate</option>
+        </select>
+
+        <button type="button" class="btn" id="btnToggleAudioGuard">🔇 0dB Silent Guard: ON</button>
+      </div>
+    </header>
+
+    <!-- PANTHEON FILTER & TRADITION BAR -->
+    <section class="panel-card" style="margin-bottom: 12px;" id="pantheonFilterBar">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <button type="button" class="btn active" id="btnFilterAll">All Deities (18)</button>
+          <button type="button" class="btn" id="btnFilterOlympian">⚡ Olympians (13)</button>
+          <button type="button" class="btn" id="btnFilterChthonic">🌑 Underworld (2)</button>
+          <button type="button" class="btn" id="btnFilterTitan">⏳ Titans &amp; Winged (2)</button>
+          <button type="button" class="btn" id="btnFilterRoman">🏛️ Roman Civic (1)</button>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <select id="traditionModeSelect" class="select-ctrl" aria-label="Naming Tradition">
+            <option value="dual">Names: Greek / Roman Dual</option>
+            <option value="greek">Names: Greek Focus</option>
+            <option value="roman">Names: Roman Focus</option>
+          </select>
+          <input type="text" id="deitySearchInput" class="text-input" placeholder="Search god, domain, or symbol..." aria-label="Search Deities">
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN WORKBENCH: LEFT 18-DEITY ROSTER | RIGHT AGENT ORACLE & STANDALONE HTML EXPORTER -->
+    <main class="pantheon-workbench" id="pantheonMainGrid">
+
+      <!-- LEFT: GRECO-ROMAN DEITY ROSTER -->
+      <section class="panel-card" id="deityRosterPanel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong style="color: var(--accent); font-size: 0.94rem;">⚡ GRECO-ROMAN DEITY AGENT ROSTER</strong>
+          <span class="badge-pill cyan" id="rosterCountBadge">Showing 18 / 18 Deities</span>
+        </div>
+
+        <div class="deity-grid" id="deityGridContainer"></div>
+      </section>
+
+      <!-- RIGHT: SELECTED DEITY AGENT DOSSIER, ORACLE COUNCIL & HTML CODE EXPORTER -->
+      <section class="panel-card" id="deityInspectorPanel">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <div>
+            <h2 id="activeDeityHeading" style="margin: 0; font-size: 1.1rem; color: var(--accent);">⚡ Zeus / Jupiter — Sovereign Sky &amp; Command Agent</h2>
+            <div id="activeDeitySubline" style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">
+              Olympian · Mount Olympus · Symbols: Thunderbolt, Eagle, Aegis · 440.0 Hz
+            </div>
+          </div>
+          <span class="badge-pill" id="activeDeityRoleBadge">CHIEF ORCHESTRATOR</span>
+        </div>
+
+        <!-- Deity Agent Traits & Capabilities -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 0.74rem;" id="activeDeitySkillsRow"></div>
+
+        <!-- Live Deity Oracle Console -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 0.82rem; color: var(--cyan);">🔮 Live Deity Agent Oracle &amp; Council Testbench</strong>
+            <button type="button" class="btn" id="btnConveneCouncil">🏛️ Convene 3-God Council</button>
+          </div>
+          <div class="oracle-log" id="oracleLogBox"></div>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="oraclePromptInput" class="text-input" style="flex: 1;" placeholder="Ask this deity agent for architecture, strategy, or creative guidance..." value="How should we architect our next ForefrontHawk flagship app?">
+            <button type="button" class="btn btn-primary" id="btnInvokeDeityAgent">Invoke Agent</button>
+          </div>
+        </div>
+
+        <!-- Standalone Agent HTML Code Exporter -->
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px;">
+            <strong style="font-size: 0.84rem; color: var(--accent);">💻 Exportable Standalone Agent HTML Code</strong>
+            <span style="font-family: var(--font-mono); font-size: 0.71rem; color: var(--cyan);" id="agentHtmlSizeLabel">Self-Contained Single-File HTML5</span>
+          </div>
+
+          <textarea id="agentHtmlCodeOutput" class="code-textarea" rows="8" readonly aria-label="Exportable Standalone Deity Agent HTML Code"></textarea>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <button type="button" class="btn btn-primary" id="btnDownloadAgentHtml">📥 Download Agent (.HTML)</button>
+            <button type="button" class="btn btn-cyan" id="btnCopyAgentHtml">📋 Copy Agent HTML Code</button>
+            <button type="button" class="btn" id="btnDownloadPantheonJson">📦 Export All 18 Agents (.JSON)</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- LOWER DUAL DECK: PRESERVED #hawkStudioRoot SYNTH + 60FPS CELESTIAL PANTHEON STAGE -->
+    <section class="lower-grid fold-grid" id="lowerDeckSection">
+
+      <!-- LEFT: PRESERVED STAGE 2 IMPORTED HTML BLUEPRINT (#hawkStudioRoot) -->
+      <div class="synth-box" id="hawkStudioRoot">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;">
+          <h1 id="synthTitle" style="font-size: 1.08rem; margin: 0; color: var(--accent);">🎹 HawkStudio Chromatic &amp; Modal Synth</h1>
+          <span class="badge-pill" id="synthModeBadge">Pantheon Harmonic Sonifier</span>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0;">
+          <label for="scaleModeSelect" style="font-size: 0.77rem; color: var(--text-muted);">Scale:</label>
+          <select id="scaleModeSelect" class="select-ctrl">
+            <option value="chromatic">Chromatic</option>
+            <option value="dorian">Dorian</option>
+            <option value="phrygian">Phrygian</option>
+            <option value="lydian">Lydian</option>
+            <option value="mixolydian">Mixolydian</option>
+          </select>
+
+          <label for="cutoffKnob" style="font-size: 0.77rem; color: var(--text-muted);">Cutoff:</label>
+          <input type="range" id="cutoffKnob" min="300" max="6000" value="2400">
+
+          <button type="button" class="btn btn-primary" id="btnTriggerArp">Play Arpeggio</button>
+          <button type="button" class="btn" id="btnPlayDeityChord">🎵 Play Deity Signature Chord</button>
+        </div>
+
+        <canvas id="waveCanvas" width="680" height="90"></canvas>
+
+        <div class="keycap-grid" id="keycapMatrixContainer">
+          <button type="button" class="keycap-btn" id="btnKeycap0"><span>1</span><span>220Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap1"><span>2</span><span>233Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap2"><span>3</span><span>247Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap3"><span>4</span><span>262Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap4"><span>5</span><span>277Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap5"><span>6</span><span>294Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap6"><span>7</span><span>311Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap7"><span>8</span><span>330Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap8"><span>9</span><span>349Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap9"><span>0</span><span>370Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap10"><span>Q</span><span>392Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap11"><span>W</span><span>415Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap12"><span>E</span><span>440Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap13"><span>R</span><span>466Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap14"><span>T</span><span>494Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap15"><span>Y</span><span>523Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap16"><span>U</span><span>554Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap17"><span>I</span><span>587Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap18"><span>O</span><span>622Hz</span></button>
+          <button type="button" class="keycap-btn" id="btnKeycap19"><span>P</span><span>659Hz</span></button>
+        </div>
+      </div>
+
+      <!-- FOLD HINGE DIVIDER -->
+      <div class="fold-hinge" id="foldHingeDivider" aria-hidden="true"></div>
+
+      <!-- RIGHT: F4-3D-SIM CELESTIAL PANTHEON ROTUNDA STAGE -->
+      <div class="synth-box" id="pantheonStageBox">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+          <h2 style="font-size: 1.02rem; margin: 0; color: var(--cyan);">🌌 F4-3D-SIM: CELESTIAL PANTHEON ROTUNDA &amp; AGENT LEY-LINES</h2>
+          <span class="badge-pill cyan" id="stageTelemetryPill">18 Active Deity Nodes · 60 FPS</span>
+        </div>
+
+        <canvas id="pantheonStageCanvas" width="640" height="245"></canvas>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+          <button type="button" class="btn" id="btnToggleOrbit">🔄 Pause / Resume Orbit</button>
+          <button type="button" class="btn" id="btnPulseLeyLines">⚡ Pulse Council Ley-Lines</button>
+          <button type="button" class="btn" id="btnBroadcastPantheon">📡 Sync to Ecosystem Bus</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANDATORY ATTRIBUTION FOOTER -->
+    <footer class="hawk-footer" id="hawkMandatoryFooter">
+      <div>
+        🦅 Powered by <strong>Forefront Hawk Full Stack Browser Development Platform</strong> (<code>forefronthawk.com</code> / <code>talon.forefronthawk.com</code> / <code>talk.forefronthawk.com</code> / <code>oar.forefronthawk.com</code> / <code>Michael@forefronthawk.com</code>) &amp; <strong>Gemini Aargon</strong>
+      </div>
+      <div style="font-family: var(--font-mono);">
+        Serial: <strong>FH-GA-ΩΑΡ-20261118-MFF-G01-HTM-26D07CB2</strong> ⇄ <strong>FH-GA-20261118-MFF-HTM-071F6AE6</strong>
+      </div>
+    </footer>
+  </div>
+
+  <div class="status-toast" id="hawkStatusToast" role="status" aria-live="polite">Ready</div>
+
+<script>
+(function() {
+  "use strict";
+
+  const OUTER_SERIAL = "FH-GA-ΩΑΡ-20261118-MFF-G01-HTM-26D07CB2";
+  const INNER_SERIAL = "FH-GA-20261118-MFF-HTM-071F6AE6";
+
+  // =========================================================================
+  // 1. COMPLETE 18-DEITY GRECO-ROMAN PANTHEON AGENT CATALOG
+  // =========================================================================
+  const PANTHEON_DEITIES = [
+    {
+      id: "zeus", greek: "Zeus", roman: "Jupiter", icon: "⚡", group: "olympian",
+      domain: "Sky, Thunder & Sovereign Command", realm: "Mount Olympus",
+      symbols: "Thunderbolt, Eagle, Aegis", role: "CHIEF ORCHESTRATOR",
+      color: "#FACC15", hz: 440.0,
+      skills: ["Multi-Agent Dispatch", "Priority Arbitration", "Executive Synthesis"],
+      systemPrompt: "You are Zeus / Jupiter, Sovereign Orchestrator of Hawk Pantheon. Deliver decisive, high-altitude architectural verdicts and coordinate specialist agents with clarity.",
+      sampleGuidance: "Establish a single sovereign state spine first, delegate specialized modules to Athena (architecture) and Hephaestus (forge), and enforce unified telemetry across every layer."
+    },
+    {
+      id: "hera", greek: "Hera", roman: "Juno", icon: "👑", group: "olympian",
+      domain: "Sovereignty, Governance & Contracts", realm: "Mount Olympus",
+      symbols: "Diadem, Peacock, Scepter", role: "GOVERNANCE GUARDIAN",
+      color: "#C084FC", hz: 493.88,
+      skills: ["Schema Contracts", "Policy Compliance", "Long-Term Stewardship"],
+      systemPrompt: "You are Hera / Juno, Guardian of Contracts and Governance in Hawk Pantheon. Protect architectural boundaries, naming conventions, and enduring system integrity.",
+      sampleGuidance: "Lock your DOM contracts, serial attribution headers, and cross-tab schema agreements before expanding features so downstream apps never drift out of alignment."
+    },
+    {
+      id: "poseidon", greek: "Poseidon", roman: "Neptune", icon: "🔱", group: "olympian",
+      domain: "Oceans, Currents & Event Streams", realm: "Atlantis & Deep Sea",
+      symbols: "Trident, Sea Horse, Wave", role: "DATA FLOW ARCHITECT",
+      color: "#22D3EE", hz: 329.63,
+      skills: ["BroadcastChannel Streams", "Async Pipelines", "Resilient Buffering"],
+      systemPrompt: "You are Poseidon / Neptune, Master of Data Currents in Hawk Pantheon. Design fluid, high-throughput event pipelines and resilient state synchronization.",
+      sampleGuidance: "Route cross-module telemetry through a non-blocking BroadcastChannel bus with try/catch storage fallbacks so bursts never stall the main UI frame loop."
+    },
+    {
+      id: "athena", greek: "Athena", roman: "Minerva", icon: "🦉", group: "olympian",
+      domain: "Strategic Wisdom, Architecture & Craft", realm: "Acropolis / Olympus",
+      symbols: "Owl, Olive Tree, Spear", role: "PRINCIPAL ARCHITECT",
+      color: "#38BDF8", hz: 523.25,
+      skills: ["System Decomposition", "Zero-Defect Verification", "Tactical Trade-Offs"],
+      systemPrompt: "You are Athena / Minerva, Principal Systems Architect of Hawk Pantheon. Analyze requirements with disciplined precision, clear decomposition, and clean modularity.",
+      sampleGuidance: "Separate deterministic data transforms from rendering loops, verify every DOM selector at boot, and keep the user's primary workflow reachable in a single click."
+    },
+    {
+      id: "apollo", greek: "Apollo", roman: "Apollo (Phoebus)", icon: "☀️", group: "olympian",
+      domain: "Light, Music, Telemetry & Prophecy", realm: "Delphi / Solar Chariot",
+      symbols: "Lyre, Sun Disc, Laurel", role: "AUDIO & TELEMETRY LEAD",
+      color: "#F59E0B", hz: 587.33,
+      skills: ["WebAudio Modal DSP", "Real-Time Dashboards", "Predictive Diagnostics"],
+      systemPrompt: "You are Apollo / Phoebus, Master of Harmonics and Telemetry in Hawk Pantheon. Illuminate system health with crisp visualizations and musical WebAudio feedback.",
+      sampleGuidance: "Pair every state transition with harmonic visual waveforms and a 0dB silent night-mode default so telemetry stays legible day or night without startling the user."
+    },
+    {
+      id: "artemis", greek: "Artemis", roman: "Diana", icon: "🏹", group: "olympian",
+      domain: "Precision Tracking, Recon & Edge Focus", realm: "Silver Wilds",
+      symbols: "Silver Bow, Crescent Moon", role: "QA & PRECISION SCOUT",
+      color: "#94A3B8", hz: 466.16,
+      skills: ["Edge-Case Hunting", "Latency Profiling", "Zero-Regression Audits"],
+      systemPrompt: "You are Artemis / Diana, Precision QA Scout of Hawk Pantheon. Track down subtle edge cases, null lookups, and mobile responsiveness defects with surgical focus.",
+      sampleGuidance: "Audit every button ID, test 430px mobile touch targets alongside 50/50 fold splits, and eliminate silent no-op handlers before shipping."
+    },
+    {
+      id: "ares", greek: "Ares", roman: "Mars", icon: "🛡️", group: "olympian",
+      domain: "Stress-Testing, Defense & Execution", realm: "Thracian Citadel",
+      symbols: "Shield, Helm, Iron Spear", role: "RED-TEAM STRESS TESTER",
+      color: "#F43F5E", hz: 293.66,
+      skills: ["Load & Fuzz Stress", "Anti-Scrape Defense", "Failure Recovery"],
+      systemPrompt: "You are Ares / Mars, Red-Team Stress Tester of Hawk Pantheon. Challenge assumptions, expose failure modes under heavy load, and harden defenses.",
+      sampleGuidance: "Hammer inputs with empty strings, rapid clicks, and restricted storage permissions to prove every handler degrades gracefully without throwing uncaught exceptions."
+    },
+    {
+      id: "aphrodite", greek: "Aphrodite", roman: "Venus", icon: "✨", group: "olympian",
+      domain: "Aesthetics, UX Harmony & Chroma", realm: "Cythera / Olympus",
+      symbols: "Golden Shell, Rose, Mirror", role: "DESIGN & CHROMA DIRECTOR",
+      color: "#F472B6", hz: 554.37,
+      skills: ["HawkChroma Palettes", "Typography Hierarchy", "Micro-Interactions"],
+      systemPrompt: "You are Aphrodite / Venus, Design and HawkChroma Director of Hawk Pantheon. Elevate utility into effortless visual elegance, contrast balance, and tactile delight.",
+      sampleGuidance: "Anchor every palette around CSS custom properties with crisp contrast ratios, subtle border luminance, and smooth layout transitions across all 4 device postures."
+    },
+    {
+      id: "hephaestus", greek: "Hephaestus", roman: "Vulcan", icon: "🔨", group: "olympian",
+      domain: "Full-Stack Forge, Code & Tooling", realm: "Mount Etna Forge",
+      symbols: "Anvil, Hammer, Flame", role: "MASTER CODE SMITH",
+      color: "#F97316", hz: 261.63,
+      skills: ["Single-File HTML5 Builds", "Canvas 60fps Engines", "Zero-Build Tooling"],
+      systemPrompt: "You are Hephaestus / Vulcan, Master Code Smith of Hawk Pantheon. Forge rock-solid, self-contained HTML5 applications with zero external build friction.",
+      sampleGuidance: "Keep all CSS and JS cleanly encapsulated in one portable artifact, inline every critical asset, and ensure one-click export works reliably offline."
+    },
+    {
+      id: "hermes", greek: "Hermes", roman: "Mercury", icon: "🪽", group: "olympian",
+      domain: "Messaging, Routing, APIs & Speed", realm: "Crossroads & Skies",
+      symbols: "Caduceus, Winged Sandals", role: "INTEGRATION COURIER",
+      color: "#00F5D4", hz: 659.25,
+      skills: ["Fast-Path Shortcuts", "Packet Serialization", "Cross-App Handoff"],
+      systemPrompt: "You are Hermes / Mercury, Integration Courier of Hawk Pantheon. Optimize communication speed, keyboard shortcuts, and seamless packet handoffs between tools.",
+      sampleGuidance: "Wrap payloads in clean, self-describing JSON or standalone HTML packets with synchronous clipboard fallbacks so users can move work across apps instantaneously."
+    },
+    {
+      id: "demeter", greek: "Demeter", roman: "Ceres", icon: "🌾", group: "olympian",
+      domain: "Sustainability, Growth & Learning", realm: "Eleusinian Fields",
+      symbols: "Golden Sheaf, Torch", role: "MENTOR & ONBOARDING GUIDE",
+      color: "#10B981", hz: 349.23,
+      skills: ["Beginner-Friendly UX", "Pre-Loaded Samples", "Guided Workflows"],
+      systemPrompt: "You are Demeter / Ceres, Mentor and Onboarding Guide of Hawk Pantheon. Cultivate intuitive learning experiences that empower young creators and builders from minute one.",
+      sampleGuidance: "Pre-populate realistic sample prompts and interactive presets at startup so new creators can click, hear, and experiment before writing a single line of code."
+    },
+    {
+      id: "dionysus", greek: "Dionysus", roman: "Bacchus", icon: "🎭", group: "olympian",
+      domain: "Creative Chaos, Remix & Storytelling", realm: "Mount Nysa",
+      symbols: "Thyrsus, Ivy, Theatre Mask", role: "CREATIVE REMIX ENGINE",
+      color: "#A855F7", hz: 392.0,
+      skills: ["5-Angle Ideation", "Worldbuilding Lore", "Unexpected Mashups"],
+      systemPrompt: "You are Dionysus / Bacchus, Creative Remix Engine of Hawk Pantheon. Break generic templates with bold angles, playful interactions, and memorable themes.",
+      sampleGuidance: "Inject personality into every tool—combine mythic framing, interactive canvas stages, and harmonic soundscapes so technical studios feel alive."
+    },
+    {
+      id: "hestia", greek: "Hestia", roman: "Vesta", icon: "🔥", group: "olympian",
+      domain: "Core Stability, Hearth & Uptime", realm: "Sacred Hearth of Olympus",
+      symbols: "Eternal Flame, Hearth", role: "RELIABILITY STEWARD",
+      color: "#FB923C", hz: 246.94,
+      skills: ["0dB Safe Boot", "Zero-Crash Defaults", "Clean State Resets"],
+      systemPrompt: "You are Hestia / Vesta, Reliability Steward of Hawk Pantheon. Maintain calm, dependable core infrastructure that always boots cleanly and recovers effortlessly.",
+      sampleGuidance: "Guard every initialization routine with safe defaults and provide a clean reset path so the workspace remains stable through endless iteration."
+    },
+    {
+      id: "hades", greek: "Hades", roman: "Pluto", icon: "💎", group: "chthonic",
+      domain: "Deep Vault, Archival Storage & Security", realm: "Underworld Vaults",
+      symbols: "Helm of Darkness, Bident, Gems", role: "VAULT & SECURITY WARDEN",
+      color: "#6366F1", hz: 220.0,
+      skills: ["Credential Scrubbing", "Integrity Hashing", "Cold-Archive Export"],
+      systemPrompt: "You are Hades / Pluto, Vault and Security Warden of Hawk Pantheon. Safeguard persistent archives, scrub secrets, and verify cryptographic integrity.",
+      sampleGuidance: "Never expose raw secrets in exports; sign manifests with deterministic hashes and keep local backups cleanly structured in portable JSON or HTML archives."
+    },
+    {
+      id: "persephone", greek: "Persephone", roman: "Proserpina", icon: "🌸", group: "chthonic",
+      domain: "Lifecycle Transitions & Renewal", realm: "Dual Realm (Spring / Underworld)",
+      symbols: "Pomegranate, Spring Blossoms", role: "VERSION & LIFECYCLE LEAD",
+      color: "#EC4899", hz: 415.3,
+      skills: ["State Migrations", "Theme Polarity Shifts", "Iterative Renewal"],
+      systemPrompt: "You are Persephone / Proserpina, Lifecycle Lead of Hawk Pantheon. Guide smooth transitions between light/dark modes, prototype generations, and software releases.",
+      sampleGuidance: "Design every data model with an explicit schema version so upgrades and theme shifts preserve user work seamlessly across generations."
+    },
+    {
+      id: "chronos", greek: "Chronos", roman: "Saturn", icon: "⏳", group: "titan",
+      domain: "Time-Series, Scheduling & Cadence", realm: "Celestial Clockwork",
+      symbols: "Hourglass, Ringed Orb", role: "TEMPORAL SCHEDULER",
+      color: "#EAB308", hz: 277.18,
+      skills: ["60fps Frame Pacing", "Milestone Roadmaps", "Temporal Telemetry"],
+      systemPrompt: "You are Chronos / Saturn, Temporal Scheduler of Hawk Pantheon. Govern animation timing, release milestones, and deterministic scheduling.",
+      sampleGuidance: "Clamp delta-time intervals in requestAnimationFrame loops so physics and visual animations stay smooth regardless of display refresh rate."
+    },
+    {
+      id: "nike", greek: "Nike", roman: "Victoria", icon: "🏆", group: "titan",
+      domain: "Benchmarks, Scoring & Victory Metrics", realm: "Winged Summit",
+      symbols: "Laurel Wreath, Golden Wings", role: "METRICS & BENCHMARK LEAD",
+      color: "#34D399", hz: 622.25,
+      skills: ["Scorecard Evaluation", "KPI Telemetry", "Ship-Readiness Gates"],
+      systemPrompt: "You are Nike / Victoria, Benchmarks Lead of Hawk Pantheon. Measure quality objectively with clear scorecards and pass/fail verification gates.",
+      sampleGuidance: "Define measurable acceptance gates upfront—zero dead buttons, zero console errors, verified exports—and celebrate every clean pass."
+    },
+    {
+      id: "janus", greek: "Janus (Roman)", roman: "Janus", icon: "🚪", group: "roman",
+      domain: "Dual-Gate Portals, Retro & Future Vision", realm: "Gates of Rome",
+      symbols: "Two-Faced Key, Archway", role: "MIGRATION & PORTAL ARCHITECT",
+      color: "#60A5FA", hz: 311.13,
+      skills: ["Backward Compatibility", "Blueprint Preservation", "Dual-Pane Views"],
+      systemPrompt: "You are Janus, Roman God of Gates and Transitions in Hawk Pantheon. Look simultaneously backward to preserve legacy blueprints and forward to unlock next-gen capabilities.",
+      sampleGuidance: "Always preserve legacy DOM IDs and function signatures while layering new capabilities beside them so older integrations continue working without interruption."
+    }
+  ];
+
+  const SCALE_INTERVALS = {
+    chromatic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    dorian: [0, 2, 3, 5, 7, 9, 10, 12],
+    phrygian: [0, 1, 3, 5, 7, 8, 10, 12],
+    lydian: [0, 2, 4, 6, 7, 9, 11, 12],
+    mixolydian: [0, 2, 4, 5, 7, 9, 10, 12]
+  };
+
+  // =========================================================================
+  // 2. APPLICATION STATE
+  // =========================================================================
+  const state = {
+    selectedId: "zeus",
+    filterGroup: "all",
+    tradition: "dual",
+    searchQuery: "",
+    silentGuard: true,
+    scaleMode: "chromatic",
+    cutoffFreq: 2400,
+    lastPlayedFreq: 440,
+    wavePhase: 0,
+    orbitActive: true,
+    orbitAngle: 0,
+    pulseStrength: 0.4,
+    generatedHtml: ""
+  };
+
+  let toastTimer = null;
+  function showToast(msg) {
+    const el = document.getElementById("hawkStatusToast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add("visible");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("visible"), 2400);
+  }
+
+  function getSelectedDeity() {
+    return PANTHEON_DEITIES.find(d => d.id === state.selectedId) || PANTHEON_DEITIES[0];
+  }
+
+  function formatDeityName(d) {
+    if (state.tradition === "greek") return d.greek;
+    if (state.tradition === "roman") return d.roman;
+    return d.greek === d.roman ? d.greek : d.greek + " / " + d.roman;
+  }
+
+  // =========================================================================
+  // 3. PRESERVED HAWKSTUDIO WEBAUDIO MODAL SYNTH & playArpeggioNote()
+  // =========================================================================
+  let audioCtx = null;
+  function getModalFrequency(idx) {
+    const intervals = SCALE_INTERVALS[state.scaleMode] || SCALE_INTERVALS.chromatic;
+    const oct = Math.floor(idx / intervals.length);
+    const deg = intervals[idx % intervals.length];
+    return Number((220 * Math.pow(2, (oct * 12 + deg) / 12)).toFixed(2));
+  }
+
+  function playArpeggioNote(freq) {
+    const safeFreq = Number(freq) || 440;
+    state.lastPlayedFreq = safeFreq;
+    state.wavePhase += 0.65;
+
+    if (state.silentGuard) {
+      console.log("Playing freq (0dB Silent Guard):", safeFreq);
+    } else {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) {
+          if (!audioCtx) audioCtx = new Ctx();
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const filt = audioCtx.createBiquadFilter();
+          const gain = audioCtx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(safeFreq, now);
+          filt.type = "lowpass";
+          filt.frequency.setValueAtTime(state.cutoffFreq, now);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.12, now + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+          osc.connect(filt);
+          filt.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        }
+      } catch (e) {
+        // Ignore if audio context restricted
+      }
+    }
+    drawWaveCanvas();
+  }
+  window.playArpeggioNote = playArpeggioNote;
+
+  function drawWaveCanvas() {
+    const canvas = document.getElementById("waveCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const deity = getSelectedDeity();
+    ctx.strokeStyle = state.silentGuard ? "#00F5D4" : deity.color;
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    const cycles = Math.max(2, Math.min(16, state.lastPlayedFreq / 50));
+    for (let x = 0; x < w; x++) {
+      const t = (x / w) * Math.PI * 2 * cycles + state.wavePhase;
+      const y = h / 2 + (Math.sin(t) * 0.72 + Math.sin(t * 2) * 0.22) * (h * 0.34);
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.fillStyle = "#94A3B8";
+    ctx.font = "11px monospace";
+    ctx.fillText((state.silentGuard ? "0dB SILENT GUARD" : "LIVE MODAL DSP") + " | " + deity.greek + " (" + state.lastPlayedFreq.toFixed(1) + " Hz) | Cutoff " + state.cutoffFreq + " Hz", 10, 15);
+  }
+
+  // =========================================================================
+  // 4. STANDALONE DEITY AGENT HTML GENERATOR (EXPORT ENGINE)
+  // =========================================================================
+  function buildStandaloneAgentHtml(deity) {
+    const fullName = deity.greek === deity.roman ? deity.greek : deity.greek + " / " + deity.roman;
+    const skillBadges = deity.skills.map(s => "<span class=\"pill\">" + s + "</span>").join(" ");
+    const closeScript = "<" + "/script>";
+
+    return [
+      "<!DOCTYPE html>",
+      "<html lang=\"en\">",
+      "<head>",
+      "<meta charset=\"utf-8\">",
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+      "<title>Hawk Pantheon Agent — " + fullName + "</title>",
+      "<style>",
+      "  :root { --bg: #070A12; --panel: #0E1525; --accent: " + deity.color + "; --cyan: #00F5D4; --text: #F8FAFC; }",
+      "  * { box-sizing: border-box; }",
+      "  body { margin: 0; padding: 24px; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }",
+      "  .agent-shell { max-width: 780px; margin: 0 auto; background: var(--panel); border: 2px solid var(--accent); border-radius: 16px; padding: 22px; }",
+      "  .pill { display: inline-block; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--accent); color: var(--accent); font-size: 0.78rem; margin: 3px 4px 3px 0; }",
+      "  .log { background: #060911; border: 1px solid rgba(255,255,255,0.14); border-radius: 10px; padding: 14px; min-height: 180px; margin: 14px 0; display: flex; flex-direction: column; gap: 10px; }",
+      "  .msg { background: #131C31; border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: 6px; font-size: 0.9rem; }",
+      "  .row { display: flex; gap: 8px; }",
+      "  input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--accent); background: #060911; color: var(--text); }",
+      "  button { padding: 10px 16px; border-radius: 8px; border: none; background: var(--accent); color: #070A12; font-weight: 800; cursor: pointer; }",
+      "  footer { margin-top: 16px; font-size: 0.75rem; color: #94A3B8; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 10px; }",
+      "</style>",
+      "</head>",
+      "<body>",
+      "  <div class=\"agent-shell\" id=\"hawkAgentRoot\">",
+      "    <h1>" + deity.icon + " " + fullName + " — " + deity.role + "</h1>",
+      "    <p><strong>Domain:</strong> " + deity.domain + " · <strong>Realm:</strong> " + deity.realm + " · <strong>Symbols:</strong> " + deity.symbols + "</p>",
+      "    <div>" + skillBadges + "</div>",
+      "    <p style=\"font-size:0.84rem;color:#94A3B8;\"><strong>System Directive:</strong> " + deity.systemPrompt + "</p>",
+      "    <div class=\"log\" id=\"agentChatLog\">",
+      "      <div class=\"msg\"><strong>" + fullName + ":</strong> " + deity.sampleGuidance + "</div>",
+      "    </div>",
+      "    <div class=\"row\">",
+      "      <input type=\"text\" id=\"agentInput\" placeholder=\"Ask " + fullName + " for guidance...\">",
+      "      <button type=\"button\" id=\"btnSendPrompt\">Consult " + deity.greek + "</button>",
+      "    </div>",
+      "    <footer>",
+      "      Powered by <strong>Forefront Hawk</strong> (forefronthawk.com / talon.forefronthawk.com) &amp; <strong>Gemini Aargon</strong> · Serial: " + OUTER_SERIAL,
+      "    </footer>",
+      "  </div>",
+      "<script>",
+      "  const AGENT = " + JSON.stringify({
+        id: deity.id,
+        greek: deity.greek,
+        roman: deity.roman,
+        role: deity.role,
+        domain: deity.domain,
+        skills: deity.skills,
+        hz: deity.hz,
+        guidance: deity.sampleGuidance
+      }) + ";",
+      "  document.getElementById(\"btnSendPrompt\").addEventListener(\"click\", function() {",
+      "    const inp = document.getElementById(\"agentInput\");",
+      "    const q = (inp.value || \"\").trim();",
+      "    if (!q) return;",
+      "    const log = document.getElementById(\"agentChatLog\");",
+      "    const u = document.createElement(\"div\");",
+      "    u.className = \"msg\";",
+      "    u.innerHTML = \"<strong>You:</strong> \" + q.replace(/[<>&]/g, \"\");",
+      "    log.appendChild(u);",
+      "    const r = document.createElement(\"div\");",
+      "    r.className = \"msg\";",
+      "    r.innerHTML = \"<strong>\" + AGENT.greek + \" / \" + AGENT.roman + \" (\" + AGENT.role + \"):</strong> Applying \" + AGENT.skills.join(\", \") + \" to your request: \" + AGENT.guidance;",
+      "    log.appendChild(r);",
+      "    inp.value = \"\";",
+      "  });",
+      closeScript,
+      "</body>",
+      "</html>"
+    ].join("\n");
+  }
+
+  // =========================================================================
+  // 5. RENDER ROSTER & INSPECTOR
+  // =========================================================================
+  function renderDeityRoster() {
+    const grid = document.getElementById("deityGridContainer");
+    if (!grid) return;
+    const q = state.searchQuery.toLowerCase().trim();
+
+    const filtered = PANTHEON_DEITIES.filter(d => {
+      const matchGroup = state.filterGroup === "all" || d.group === state.filterGroup;
+      const matchQuery = !q ||
+        d.greek.toLowerCase().includes(q) ||
+        d.roman.toLowerCase().includes(q) ||
+        d.domain.toLowerCase().includes(q) ||
+        d.symbols.toLowerCase().includes(q) ||
+        d.role.toLowerCase().includes(q);
+      return matchGroup && matchQuery;
+    });
+
+    document.getElementById("rosterCountBadge").textContent = "Showing " + filtered.length + " / " + PANTHEON_DEITIES.length + " Deities";
+
+    grid.innerHTML = "";
+    filtered.forEach((d) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "deity-card" + (d.id === state.selectedId ? " selected" : "");
+      card.id = "deityCard_" + d.id;
+      card.innerHTML =
+        "<div class=\"deity-name-row\"><span>" + d.icon + " " + formatDeityName(d) + "</span><span style=\"color:" + d.color + ";font-size:0.7rem;font-family:var(--font-mono);\">" + Math.round(d.hz) + "Hz</span></div>" +
+        "<div class=\"deity-domain\">" + d.domain + "</div>" +
+        "<div style=\"font-size:0.68rem;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;\">" + d.role + "</div>";
+      card.addEventListener("click", function() {
+        selectDeity(d.id);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function appendOracleMessage(speaker, color, text) {
+    const box = document.getElementById("oracleLogBox");
+    if (!box) return;
+    const div = document.createElement("div");
+    div.className = "oracle-msg";
+    div.style.borderLeftColor = color;
+    div.innerHTML = "<strong style=\"color:" + color + ";\">" + speaker + ":</strong> " + text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function selectDeity(deityId) {
+    state.selectedId = deityId;
+    const d = getSelectedDeity();
+
+    document.getElementById("activeDeityHeading").textContent = d.icon + " " + formatDeityName(d) + " — " + d.domain;
+    document.getElementById("activeDeitySubline").textContent = d.realm + " · Symbols: " + d.symbols + " · Modal Signature: " + d.hz.toFixed(1) + " Hz";
+    document.getElementById("activeDeityRoleBadge").textContent = d.role;
+
+    const skillsRow = document.getElementById("activeDeitySkillsRow");
+    skillsRow.innerHTML = d.skills.map(sk =>
+      "<div style=\"background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:6px 8px;text-align:center;\"><strong style=\"color:" + d.color + ";\">✦</strong> " + sk + "</div>"
+    ).join("");
+
+    // Generate Standalone Agent HTML Code
+    const htmlCode = buildStandaloneAgentHtml(d);
+    state.generatedHtml = htmlCode;
+    document.getElementById("agentHtmlCodeOutput").value = htmlCode;
+    document.getElementById("agentHtmlSizeLabel").textContent = htmlCode.length.toLocaleString() + " bytes · Standalone Agent HTML5";
+
+    // Refresh Oracle starter note
+    const box = document.getElementById("oracleLogBox");
+    box.innerHTML = "";
+    appendOracleMessage(d.icon + " " + formatDeityName(d), d.color, d.sampleGuidance);
+
+    state.pulseStrength = 1.0;
+    playArpeggioNote(d.hz);
+    renderDeityRoster();
+  }
+
+  // =========================================================================
+  // 6. F4-3D-SIM: 60FPS CELESTIAL PANTHEON ROTUNDA STAGE
+  // =========================================================================
+  function startPantheonStageLoop() {
+    const canvas = document.getElementById("pantheonStageCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    function frame() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      ctx.clearRect(0, 0, w, h);
+
+      if (state.orbitActive) state.orbitAngle += 0.008;
+      if (state.pulseStrength > 0.25) state.pulseStrength *= 0.985;
+
+      // Concentric Temple Dome Rings
+      [55, 100].forEach((r) => {
+        ctx.strokeStyle = "rgba(212, 175, 55, 0.22)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, r * 2.1, r * 0.95, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      const activeDeity = getSelectedDeity();
+      const positions = [];
+
+      PANTHEON_DEITIES.forEach((d, idx) => {
+        const isOuter = idx >= 9;
+        const ringIdx = isOuter ? idx - 9 : idx;
+        const ringCount = 9;
+        const angle = (ringIdx / ringCount) * Math.PI * 2 + (isOuter ? -state.orbitAngle * 0.7 : state.orbitAngle);
+        const rx = isOuter ? 215 : 118;
+        const ry = isOuter ? 94 : 52;
+        const x = cx + Math.cos(angle) * rx;
+        const y = cy + Math.sin(angle) * ry;
+        positions.push({ d: d, x: x, y: y });
+      });
+
+      const activePos = positions.find(p => p.d.id === activeDeity.id) || positions[0];
+
+      // Draw Ley-Lines from active deity to neighboring council nodes
+      positions.forEach((p, idx) => {
+        if (p.d.id !== activeDeity.id && idx % 3 === 0) {
+          ctx.strokeStyle = "rgba(0, 245, 212, " + (0.2 + state.pulseStrength * 0.45) + ")";
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.moveTo(activePos.x, activePos.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+        }
+      });
+
+      // Draw Center Pantheon Hearth Core
+      ctx.fillStyle = "#0D1322";
+      ctx.strokeStyle = activeDeity.color;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 24, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "#F8FAFC";
+      ctx.font = "16px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(activeDeity.icon, cx, cy + 6);
+
+      // Draw All 18 Deity Nodes
+      positions.forEach((p) => {
+        const isSel = p.d.id === activeDeity.id;
+        ctx.fillStyle = isSel ? p.d.color : "#131C31";
+        ctx.strokeStyle = p.d.color;
+        ctx.lineWidth = isSel ? 3 : 1.5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, isSel ? 13 : 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = isSel ? "#FFFFFF" : "#94A3B8";
+        ctx.font = isSel ? "bold 10px monospace" : "9px monospace";
+        ctx.fillText(p.d.greek, p.x, p.y - (isSel ? 17 : 12));
+      });
+
+      ctx.textAlign = "left";
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // =========================================================================
+  // 7. SAFE COPY, DOWNLOAD & EVENT BINDINGS
+  // =========================================================================
+  function copyTextSafe(text, label) {
+    let ok = false;
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.webkitUserSelect = "text";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) {
+      ok = false;
+    }
+    if (!ok && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    showToast("Copied " + label + " to clipboard!");
+  }
+
+  function downloadFileSafe(filename, content, mimeType) {
+    try {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1200);
+      showToast("Downloaded " + filename + "!");
+    } catch (e) {
+      copyTextSafe(content, filename);
+    }
+  }
+
+  function setDevicePosture(posture) {
+    [document.documentElement, document.body].forEach((el) => {
+      el.setAttribute("data-device", posture);
+      el.setAttribute("data-self-device", posture);
+      el.setAttribute("data-hx-device", posture);
+    });
+    const map = {
+      desktop: "btnPostureDesktop",
+      mobile: "btnPostureMobile",
+      fold: "btnPostureFold",
+      tablet: "btnPostureTablet"
+    };
+    Object.keys(map).forEach((k) => {
+      const b = document.getElementById(map[k]);
+      if (b) b.classList.toggle("active", k === posture);
+    });
+    showToast("Posture switched to " + posture.toUpperCase());
+  }
+
+  function bindAllControls() {
+    // 4-Posture Controls
+    document.getElementById("btnPostureDesktop").addEventListener("click", () => setDevicePosture("desktop"));
+    document.getElementById("btnPostureMobile").addEventListener("click", () => setDevicePosture("mobile"));
+    document.getElementById("btnPostureFold").addEventListener("click", () => setDevicePosture("fold"));
+    document.getElementById("btnPostureTablet").addEventListener("click", () => setDevicePosture("tablet"));
+
+    // HawkChroma Theme Selector
+    const uiSel = document.getElementById("uiThemeSelect");
+    uiSel.addEventListener("change", function() {
+      document.documentElement.setAttribute("data-ui-theme", uiSel.value);
+      showToast("Theme: " + uiSel.options[uiSel.selectedIndex].text);
+    });
+
+    // 0dB Silent Boot Guard
+    const btnGuard = document.getElementById("btnToggleAudioGuard");
+    btnGuard.addEventListener("click", function() {
+      state.silentGuard = !state.silentGuard;
+      btnGuard.textContent = state.silentGuard ? "🔇 0dB Silent Guard: ON" : "🔊 Live WebAudio DSP: ON";
+      btnGuard.classList.toggle("active", !state.silentGuard);
+      drawWaveCanvas();
+      showToast(state.silentGuard ? "0dB Silent Boot Guard enabled." : "Live WebAudio Modal Synth enabled!");
+    });
+
+    // Group Filters
+    const filterMap = [
+      { id: "btnFilterAll", group: "all" },
+      { id: "btnFilterOlympian", group: "olympian" },
+      { id: "btnFilterChthonic", group: "chthonic" },
+      { id: "btnFilterTitan", group: "titan" },
+      { id: "btnFilterRoman", group: "roman" }
+    ];
+    filterMap.forEach((f) => {
+      document.getElementById(f.id).addEventListener("click", function() {
+        state.filterGroup = f.group;
+        filterMap.forEach((other) => {
+          document.getElementById(other.id).classList.toggle("active", other.id === f.id);
+        });
+        renderDeityRoster();
+      });
+    });
+
+    document.getElementById("traditionModeSelect").addEventListener("change", function(e) {
+      state.tradition = e.target.value;
+      selectDeity(state.selectedId);
+    });
+
+    document.getElementById("deitySearchInput").addEventListener("input", function(e) {
+      state.searchQuery = e.target.value;
+      renderDeityRoster();
+    });
+
+    // Oracle Invocation & 3-God Council
+    document.getElementById("btnInvokeDeityAgent").addEventListener("click", function() {
+      const inp = document.getElementById("oraclePromptInput");
+      const q = (inp.value || "").trim() || "Provide tactical guidance for our current build.";
+      const d = getSelectedDeity();
+      appendOracleMessage("You", "#94A3B8", q.replace(/[<>&]/g, ""));
+      appendOracleMessage(
+        d.icon + " " + formatDeityName(d) + " (" + d.role + ")",
+        d.color,
+        "Applying " + d.skills.join(" + ") + ": " + d.sampleGuidance
+      );
+      playArpeggioNote(d.hz);
+      state.pulseStrength = 1.0;
+    });
+
+    document.getElementById("btnConveneCouncil").addEventListener("click", function() {
+      const primary = getSelectedDeity();
+      const council = [
+        primary,
+        PANTHEON_DEITIES.find(d => d.id === "athena"),
+        PANTHEON_DEITIES.find(d => d.id === "hephaestus")
+      ];
+      council.forEach((member, idx) => {
+        if (!member) return;
+        setTimeout(() => {
+          appendOracleMessage("🏛️ Council · " + member.icon + " " + formatDeityName(member), member.color, member.sampleGuidance);
+          playArpeggioNote(member.hz);
+        }, idx * 140);
+      });
+      state.pulseStrength = 1.0;
+      showToast("Convened 3-Deity Pantheon Advisory Council!");
+    });
+
+    // Standalone Agent HTML Export Controls
+    document.getElementById("btnDownloadAgentHtml").addEventListener("click", function() {
+      const d = getSelectedDeity();
+      downloadFileSafe("hawk_pantheon_agent_" + d.id + ".html", state.generatedHtml, "text/html");
+    });
+
+    document.getElementById("btnCopyAgentHtml").addEventListener("click", function() {
+      const d = getSelectedDeity();
+      copyTextSafe(state.generatedHtml, d.greek + " / " + d.roman + " Standalone Agent HTML");
+    });
+
+    document.getElementById("btnDownloadPantheonJson").addEventListener("click", function() {
+      const bundle = {
+        platform: "Forefront Hawk (forefronthawk.com / talon.forefronthawk.com)",
+        aiPartner: "Gemini Aargon",
+        outerSerial: OUTER_SERIAL,
+        innerSerial: INNER_SERIAL,
+        deityAgents: PANTHEON_DEITIES.map(d => ({
+          id: d.id,
+          greek: d.greek,
+          roman: d.roman,
+          domain: d.domain,
+          role: d.role,
+          skills: d.skills,
+          hz: d.hz,
+          standaloneHtml: buildStandaloneAgentHtml(d)
+        }))
+      };
+      downloadFileSafe("hawk_pantheon_18_agents_bundle.json", JSON.stringify(bundle, null, 2), "application/json");
+    });
+
+    // Preserved Stage 2 #hawkStudioRoot Controls
+    document.getElementById("btnTriggerArp").addEventListener("click", function() {
+      [0, 2, 4, 7].forEach((deg, idx) => {
+        setTimeout(() => playArpeggioNote(getModalFrequency(deg)), idx * 105);
+      });
+    });
+
+    document.getElementById("btnPlayDeityChord").addEventListener("click", function() {
+      const d = getSelectedDeity();
+      [1, 1.25, 1.5].forEach((mult, idx) => {
+        setTimeout(() => playArpeggioNote(d.hz * mult), idx * 90);
+      });
+      showToast("Played " + formatDeityName(d) + " harmonic triad!");
+    });
+
+    document.getElementById("scaleModeSelect").addEventListener("change", function(e) {
+      state.scaleMode = e.target.value;
+      playArpeggioNote(getModalFrequency(0));
+    });
+
+    document.getElementById("cutoffKnob").addEventListener("input", function(e) {
+      state.cutoffFreq = Number(e.target.value) || 2400;
+      drawWaveCanvas();
+    });
+
+    document.querySelectorAll("#keycapMatrixContainer .keycap-btn").forEach((kb, i) => {
+      kb.addEventListener("click", () => playArpeggioNote(getModalFrequency(i)));
+    });
+
+    // 3D Stage Controls
+    document.getElementById("btnToggleOrbit").addEventListener("click", function() {
+      state.orbitActive = !state.orbitActive;
+      showToast(state.orbitActive ? "Pantheon celestial orbit resumed." : "Pantheon celestial orbit paused.");
+    });
+
+    document.getElementById("btnPulseLeyLines").addEventListener("click", function() {
+      state.pulseStrength = 1.0;
+      playArpeggioNote(getSelectedDeity().hz);
+      showToast("Pulsed Pantheon council ley-lines!");
+    });
+
+    document.getElementById("btnBroadcastPantheon").addEventListener("click", function() {
+      try {
+        if (typeof BroadcastChannel !== "undefined") {
+          const ch = new BroadcastChannel("hawk_creator_ecosystem_v1");
+          ch.postMessage({
+            type: "HAWK_PANTHEON_AGENT_SYNC",
+            serial: OUTER_SERIAL,
+            deity: getSelectedDeity().id
+          });
+          ch.close();
+        }
+      } catch (e) {
+        // Safe fallback
+      }
+      showToast("Synced active deity agent to hawk_creator_ecosystem_v1!");
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", function() {
+    bindAllControls();
+    selectDeity("zeus");
+    startPantheonStageLoop();
+  });
+})();
+</script>
+</body>
+</html>
